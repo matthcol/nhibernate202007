@@ -11,9 +11,15 @@ namespace MovieApp01
     {
         MovieMapping()
         {
-            Id(x => x.Id);
-            Map(x => x.Title);
-            Map(x => x.Year);
+            Id(x => x.Id).GeneratedBy.Identity();
+                //.Guid();
+                //.Assigned(); // provided by NHibernate
+                //.Sequence("seq_movie_id");
+                //.Identity(); // default pour un int
+            Map(x => x.Title).Length(250).Not.Nullable();
+            Map(x => x.Year).Not.Nullable();
+            Map(x => x.Duration).Nullable(); // default mode
+            Table("Movies");
         }
     }
 }
