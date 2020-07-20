@@ -1,6 +1,7 @@
 ﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
+using NHibernate.Tool.hbm2ddl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,11 @@ namespace MovieApp01
             .Mappings(
                m=>m.FluentMappings.AddFromAssemblyOf<Movie>()
                )
+           .ExposeConfiguration(cfg =>
+             {
+                 new SchemaExport(cfg)
+                   .Create(false, true);
+             })
             .BuildSessionFactory();
         }
     }
