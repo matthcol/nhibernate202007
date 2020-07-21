@@ -1,6 +1,7 @@
 ﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
+using NHibernate.Criterion;
 using NHibernate.Linq;
 using NHibernate.Tool.hbm2ddl;
 using System;
@@ -20,7 +21,7 @@ namespace MovieApp01
             sessionFactory = Configure();
             // AddMovies();
             ReadMovies();
-            RequestMovies();
+            //RequestMovies();
         }
         private static void AddMovies()
         {
@@ -46,7 +47,10 @@ namespace MovieApp01
                 clint.DirectedMovies = moviesClint;
                 // association play (actors)
                 var actorsImpitoyable = new List<Star> { clint,  morgan};
+                var playedMovies = new List<Movie> { mImp };
                 mImp.Actors = actorsImpitoyable;
+                clint.PlayedMovies = playedMovies;
+                morgan.PlayedMovies = playedMovies; // Attention au partage de liste
 
                 tx.Commit();  // valider toutes les maj
                 Console.WriteLine("Movie inserted with id {0:D}", mGT.Id);
@@ -61,6 +65,8 @@ namespace MovieApp01
                 Console.WriteLine("Read: {0}", m.Title);
                 Star s = session.Get<Star>(1);  // Clint Eastwood
                 Console.WriteLine("Read: {0}", s.FullName);
+                displayMovies(s.DirectedMovies, "\t * mD");
+                displayMovies(s.PlayedMovies, "\t ~ mA");
 
                 var movies = session.Query<Movie>(); //.ToList();
                 foreach (var mov in movies)
@@ -68,8 +74,10 @@ namespace MovieApp01
                     Console.WriteLine(" * Read: {0}", mov.Title);
                     if (mov.Director != null)
                     {
-                        //Console.WriteLine("\t - {0}", mov.Director.FullName);
+                        Console.WriteLine("\t - d: {0}", mov.Director.FullName);
+
                     }
+                    displayStars(mov.Actors, "\t - a");
                 }
 
                 //IList<Movie> movies2 = session.CreateQuery("from Movie m where m.Year = 2008").List<Movie>(); // HQL
@@ -93,18 +101,49 @@ namespace MovieApp01
         {
             using (ISession session = sessionFactory.OpenSession())
             {
+                var q = session.CreateCriteria<Star>()
+                    .Add(Expression.Like("FullName", "%East%"))
+                    //.Add(Expression.Lt("Birthdate", new DateTime(1950,1,1)))
+                    /*.Add(Expression.Eq(
+                        Projections.SqlFunction("year", NHibernateUtil.Int32, Projections.Property("Birthdate")),
+                       1930))*/
+                    .Add(Expression.IsNotNull("Birthdate"))
+                    .AddOrder(Order.Asc("FullName"))
+                    .List<Star>();
+                displayStars(q, "\t # star");
 
-                
+                /*var q2 = session.CreateQuery("from Star s where extract(year from s.Birthdate) = :year").List<Star>();
+                displayStars(q, "\t # star 1930");
+*/
             }
 
         }
+
+        private static void displayStars(IEnumerable<Star> stars, string bullet)
+        {
+            foreach (var s in stars)
+            {
+                Console.WriteLine("{0}: {1} ({2})", bullet, s.FullName, s.Birthdate);
+            }
+        }
+
+        private static void displayMovies(IEnumerable<Movie> movies, string bullet)
+        {
+            foreach (var m in movies)
+            {
+                Console.WriteLine("{0}: {1} ({2}, {3} mn)", bullet, m.Title, m.Year, m.Duration);
+            }
+        }
+
+
+
 
         private static ISessionFactory Configure()
         {
            return Fluently.Configure()
             .Database(
                MsSqlConfiguration.MsSql2012
-                    .ConnectionString("Server=Desktop-RRAODUE\\MSSQL17;Database=dbmovies03;User Id=umovie;Password=password;")
+                    .ConnectionString("Server=Desktop-RRAODUE\\MSSQL17;Database=dbmovies01;User Id=umovie;Password=password;")
                     .ShowSql()                    
                     )
             .Mappings(
@@ -113,11 +152,11 @@ namespace MovieApp01
                 .Add<StarMapping>()
                 //.AddFromAssemblyOf<Movie>()
                )
-           .ExposeConfiguration(cfg =>
+           /*.ExposeConfiguration(cfg =>
              {
                  new SchemaExport(cfg)
                    .Create(false, true);
-             })
+             })*/
             .BuildSessionFactory();
         }
     }

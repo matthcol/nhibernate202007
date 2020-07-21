@@ -13,5 +13,6 @@ namespace MovieApp01
         public virtual DateTime? Birthdate { get; set; } // pas obligatoire
 
         public virtual IEnumerable<Movie> DirectedMovies { get; set; }
+        public virtual IEnumerable<Movie> PlayedMovies { get; set; }
     }
 }

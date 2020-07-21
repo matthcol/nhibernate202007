@@ -26,7 +26,7 @@ namespace MovieApp01
             HasManyToMany<Star>(x => x.Actors)
                 .Table("Play")
                 .ParentKeyColumn("id_movie")
-                .ChildKeyColumn("id_actor");
+                .ChildKeyColumn("id_actor");  // maxime : cascade.saveUpdate
             Table("Movies");
         }
     }

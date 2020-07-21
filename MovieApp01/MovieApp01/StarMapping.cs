@@ -17,6 +17,11 @@ namespace MovieApp01
             HasMany<Movie>(x => x.DirectedMovies)
                 .KeyColumn("id_director") // non obligatoire si mode Inverse et seule association
                 .Inverse();  // association bidirectionnelle déjà mappé pour l'autre classe (FK)
+            HasManyToMany<Movie>(x => x.PlayedMovies)
+                .Table("Play")
+                .ParentKeyColumn("id_actor")
+                .ChildKeyColumn("id_movie")
+                .Inverse();
             Table("Stars");
         }
     }
