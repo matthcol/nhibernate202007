@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace MovieApp01
 {
-    class Star
+    public class Star
     {
-        public string FullName;
-        public DateTime Birthdate;
+        public virtual int Id { get; set; }
+        public virtual string FullName { get; set; }  // obligatoire
+        public virtual DateTime? Birthdate { get; set; } // pas obligatoire
+
+        public virtual IEnumerable<Movie> DirectedMovies { get; set; }
     }
 }

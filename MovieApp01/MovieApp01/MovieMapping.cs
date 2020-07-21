@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MovieApp01
 {
-    class MovieMapping: ClassMap<Movie>
+    public class MovieMapping: ClassMap<Movie>
     {
         MovieMapping()
         {
@@ -19,6 +19,14 @@ namespace MovieApp01
             Map(x => x.Title).Length(250).Not.Nullable();
             Map(x => x.Year).Not.Nullable();
             Map(x => x.Duration).Nullable(); // default mode
+            References<Star>(x => x.Director)
+                //.Fetch.Join()
+                .Column("id_director")
+                .Nullable();
+            HasManyToMany<Star>(x => x.Actors)
+                .Table("Play")
+                .ParentKeyColumn("id_movie")
+                .ChildKeyColumn("id_actor");
             Table("Movies");
         }
     }
