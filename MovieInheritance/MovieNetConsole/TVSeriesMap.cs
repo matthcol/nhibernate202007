@@ -15,7 +15,7 @@ namespace MovieNetConsole
             Map(x => x.EndYear);
             Map(x => x.SeasonNumber);
             // DiscriminatorValue(MediaType.TVSERIES.ToString());
-            KeyColumn("media_id");
+            //KeyColumn("media_id");
         }
     }
     

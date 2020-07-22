@@ -12,20 +12,21 @@ namespace MovieNetConsole
         MediaMap()
         {
             Id(x => x.Id)
-                .GeneratedBy.Identity();
+                .GeneratedBy.Sequence("seq_movie");
             Map(x => x.Title)
                 .Length(250)
                 .Not.Nullable();
             Map(x => x.Year)
                 .Not.Nullable();
             // Discriminant :
-          /*  Map(x => x.Type, "media_type");
-            DiscriminateSubClassesOnColumn("media_type")
-                 .AlwaysSelectWithValue()
-            //.Formula("arbitrary SQL expression")
-                .ReadOnly()
-                .Not.Nullable()
-                .CustomType<string>();*/
+            /*  Map(x => x.Type, "media_type");
+              DiscriminateSubClassesOnColumn("media_type")
+                   .AlwaysSelectWithValue()
+              //.Formula("arbitrary SQL expression")
+                  .ReadOnly()
+                  .Not.Nullable()
+                  .CustomType<string>();*/
+            UseUnionSubclassForInheritanceMapping();
 
         }
     }

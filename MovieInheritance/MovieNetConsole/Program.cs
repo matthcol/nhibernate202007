@@ -48,7 +48,9 @@ namespace MovieNetConsole
         {
             using (var session = _sessionFactory.OpenSession())
             {
-                var movies = session.Query<Media>().ToList(); // ou sur Movie ou sur TVSeries
+                var movies = session.Query<Media>().ToList(); 
+                // query sur Media : union
+                // ou sur Movie ou sur TVSeries : 1 seule table sans join
                 foreach (var m in  movies)
                 {
                     Console.WriteLine("Read: {0} ({1}/{2})", m.Title, m.Type, m.GetType());

@@ -20,7 +20,7 @@ namespace MovieNetConsole
                  .Column("id_director")
                  .Nullable();*/
             // DiscriminatorValue(MediaType.MOVIE.ToString());
-            KeyColumn("media_id");
+            // KeyColumn("media_id");
         }
     }
 
