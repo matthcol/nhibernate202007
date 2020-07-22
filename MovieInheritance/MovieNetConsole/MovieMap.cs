@@ -16,10 +16,11 @@ namespace MovieNetConsole
         { 
             Map(x => x.Duration)
                 .Nullable();
-           /* References(x => x.Director)
-                .Column("id_director")
-                .Nullable();*/
-            DiscriminatorValue(MediaType.MOVIE.ToString());
+            /* References(x => x.Director)
+                 .Column("id_director")
+                 .Nullable();*/
+            // DiscriminatorValue(MediaType.MOVIE.ToString());
+            KeyColumn("media_id");
         }
     }
 

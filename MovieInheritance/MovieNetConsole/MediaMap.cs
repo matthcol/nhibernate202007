@@ -19,13 +19,13 @@ namespace MovieNetConsole
             Map(x => x.Year)
                 .Not.Nullable();
             // Discriminant :
-            Map(x => x.Type, "media_type");
+          /*  Map(x => x.Type, "media_type");
             DiscriminateSubClassesOnColumn("media_type")
                  .AlwaysSelectWithValue()
             //.Formula("arbitrary SQL expression")
                 .ReadOnly()
                 .Not.Nullable()
-                .CustomType<string>();
+                .CustomType<string>();*/
 
         }
     }
