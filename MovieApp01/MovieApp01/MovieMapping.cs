@@ -20,8 +20,10 @@ namespace MovieApp01
             Map(x => x.Year).Not.Nullable();
             Map(x => x.Duration).Nullable(); // default mode
             References<Star>(x => x.Director)
-                //.Fetch.Join()
+                //.Fetch.Join()  // association eager to fetch director at the same time
                 .Column("id_director")
+                //.Cascade.SaveUpdate()
+                // .Cascade.DeleteOrphans() .DElete() : danger !!!
                 .Nullable();
             HasManyToMany<Star>(x => x.Actors)
                 .Table("Play")

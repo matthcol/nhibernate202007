@@ -16,6 +16,11 @@ namespace MovieApp01
         
         // associations :
         public virtual Star Director { get; set; }
-        public virtual IEnumerable<Star> Actors { get; set; }
+        public virtual IEnumerable<Star> Actors { get; set; } // quid du role ?
+
+        public override string ToString()
+        {
+            return Title;
+        }
     }
 }

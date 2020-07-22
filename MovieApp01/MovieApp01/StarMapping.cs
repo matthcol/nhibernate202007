@@ -16,6 +16,7 @@ namespace MovieApp01
             Map(x => x.Birthdate).Nullable();
             HasMany<Movie>(x => x.DirectedMovies)
                 .KeyColumn("id_director") // non obligatoire si mode Inverse et seule association
+               // .Cascade.SaveUpdate()
                 .Inverse();  // association bidirectionnelle déjà mappé pour l'autre classe (FK)
             HasManyToMany<Movie>(x => x.PlayedMovies)
                 .Table("Play")

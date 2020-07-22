@@ -14,5 +14,8 @@ namespace MovieApp01
 
         public virtual IEnumerable<Movie> DirectedMovies { get; set; }
         public virtual IEnumerable<Movie> PlayedMovies { get; set; }
+
+        public override string ToString() => FullName;
+        
     }
 }
